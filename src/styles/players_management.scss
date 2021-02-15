@@ -1,0 +1,19 @@
+.Button_EditAction {
+    margin-right: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+.Search_Input {
+    width: 100%;
+    max-width: 500px;
+}
+
+@media only screen and (max-width: 786px) {
+    .Header_Actions {
+        flex-direction: column !important;
+
+        form {
+            margin-top: 10px;
+        }
+    }
+  }

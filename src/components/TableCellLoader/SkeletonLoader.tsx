@@ -6,7 +6,7 @@ interface LoaderProps{
     size?: number;
 }
 const SkeletonLoader: React.FC<LoaderProps> = ({ size }: LoaderProps) => (
-        <Box display="flex">
+        <Box display="flex" width="100%">
             <TableCell />
             <TableCell />
             <TableCell />

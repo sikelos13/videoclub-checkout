@@ -1,5 +1,5 @@
 export interface Movie {
-    poster_pat: string;
+    poster_path: string;
     adult: false;
     overview: string;
     release_date: string;

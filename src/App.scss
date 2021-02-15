@@ -6,9 +6,7 @@ html, body {
 }
 
 .Main_Container {
-    background-color: #fff;
-    padding: 0 !important;
-    border-radius: 8px;
+    max-width: 1400px !important;
 }
 
 @import 'styles/players_management.scss';

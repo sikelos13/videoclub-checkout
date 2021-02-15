@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
-import { fetchMoviesApi, FetchMoviesApiResponse  } from '../api/movies_management/fetchMovies';
+import { fetchMoviesApi, FetchMoviesApiResponse } from '../api/movies_management/fetchMovies';
 import MoviesList from '../components/movies_management/MoviesList';
-import { CheckoutFormData } from '../api/types/Checkout';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+
 import Box from '@material-ui/core/Box';
 import toast from 'react-hot-toast';
 import SkeletonLoader from "../components/TableCellLoader";
 import AppHeader from '../components/AppHeader';
-import { TableFooter } from '@material-ui/core';
 import { debounce } from '../utils/debounce';
-// import CheckoutConfirmationModal from "../components/modals/CheckoutConfirmationModal";
 import { getUpdatedItemsListOnEdit } from "../utils/getUpdatedItemsListOnEdit";
 import { getUpdatedItemsListOnDelete } from "../utils/getUpdatedItemsListOnDelete";
 import { Movie } from "../api/types/Movie";
+import { Pagination } from '../api/types/Pagination';
+import PaginationNavBar from '../components/PaginationNavBar';
+import { getHasNextPage } from '../utils/getHasNextPage';
 
 interface MoviesManagementState {
     loading: boolean;
@@ -26,6 +21,8 @@ interface MoviesManagementState {
     isSearching: boolean;
     selectedMovie?: Movie;
     issModalOpen: boolean;
+    notificationText: string;
+    pagination: Pagination;
 }
 
 class MoviesManagement extends Component<{}, MoviesManagementState> {
@@ -37,21 +34,43 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
             loading: false,
             searchTerm: "",
             isSearching: false,
-            issModalOpen: false
+            issModalOpen: false,
+            notificationText: "Please search movies",
+            pagination: {
+                page: 1,
+                total_pages: 0,
+                total_results: 0,
+                hasNextPage: false
+            }
         }
 
         this.handleSearch = debounce(this.handleSearch, 500);
     }
 
     fetchMovies = (query: string) => {
+        const { pagination } = this.state;
+        const { page } = pagination;
+
         this.setState({ loading: true });
-        fetchMoviesApi(query).then((response: FetchMoviesApiResponse) => {
+
+        const params = {
+            query,
+            page
+        }
+        fetchMoviesApi(params).then((response: FetchMoviesApiResponse) => {
             if (response.success) {
                 // const currentPlayersList = getCurrentPlayersList(1, playersPerPage, response.data);
 
                 this.setState({
                     moviesList: response.data.results,
-                    loading: false
+                    loading: false,
+                    notificationText: response.data.results.length === 0 ? "No movies found" : "",
+                    pagination: {
+                        page: response.data.page,
+                        total_results: response.data.total_results,
+                        total_pages: response.data.total_pages,
+                        hasNextPage: getHasNextPage(response.data.page, response.data.total_results)
+                    }
                 })
             } else {
                 toast.error(response.errorMessage);
@@ -65,8 +84,10 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
 
     handleSearch = (event: any) => {
         const value = event.target.value
-        this.setState({ searchTerm: value, loading: true });
-        this.fetchMovies(value);
+        if (value !== "") {
+            this.setState({ searchTerm: value });
+            this.fetchMovies(value);
+        }
     }
 
     handleUpdate = (form: any) => {
@@ -115,7 +136,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
         //             }
         //         });
         //         this.handleCloseModal();
-                
+
         //         toast.success(response.successMessage, {
         //             duration: 3000
         //         });
@@ -176,7 +197,20 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
 
         // this.setState({ newPlayerName: value })
     }
-    
+
+    handlePaginate = (pageNumber: number) => {
+        const { pagination, searchTerm } = this.state;
+
+        // const updatedNextPage = getHasNextPage(pagination.page, pagination.total_results)
+        this.setState({
+            pagination: {
+                ...pagination,
+                page: pageNumber
+            }
+        }, () => this.fetchMovies(searchTerm)
+        );
+    }
+
     // handleOpenModal = (player: Player) => {
     //     this.setState({
     //         selectedMovie: player,
@@ -192,29 +226,29 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
     // }
 
     render() {
-        const { 
-            moviesList, 
-            loading, 
-            searchTerm, 
+        const {
+            moviesList,
+            loading,
+            searchTerm,
+            notificationText,
             isSearching,
-            selectedMovie, 
-            issModalOpen 
+            selectedMovie,
+            pagination
         } = this.state;
 
         return (
             <Box
-                boxShadow="0 15px 17px 0 rgb(0 0 0 / 16%), 0 15px 17px 0 rgb(0 0 0 / 12%)"
-                border="1px black solid"
-                borderRadius="8px"
                 p={2}
                 mt={2}
-            >
+            >                    
                 <AppHeader
                     handleSearch={this.handleSearch}
-                    handleAddPlayer={this.handleAddPlayer}
-                    handleChangeInput={this.handleChangeInput}
+                    pagination={pagination}
+                    isSearching={isSearching}
+                    handlePaginate={this.handlePaginate}
                     searchTerm={searchTerm}
                 />
+              
                 <Box
                     mt={2}
                     pb={2}
@@ -223,12 +257,14 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
                     flexWrap="wrap"
                     justifyContent="space-evenly"
                 >
-                        {!loading
-                            ? <MoviesList 
-                                moviesList={moviesList}
-                            />
+                    {!loading
+                        ? <MoviesList
+                            moviesList={moviesList}
+                            notificationText={notificationText}
+                        />
                         : <SkeletonLoader />
                     }
+
 
                     {/* {issModalOpen && selectedPlayer &&
                         <CheckoutConfirmationModal
@@ -239,6 +275,13 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
                         />
                     } */}
                 </Box>
+                
+                    <PaginationNavBar
+                        isSearching={isSearching}
+                        pagination={pagination}
+                        paginate={this.handlePaginate}
+                    />
+                
             </Box>
         );
     }

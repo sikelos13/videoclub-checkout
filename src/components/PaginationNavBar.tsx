@@ -19,7 +19,7 @@ const PaginationNavBar: React.FC<PaginationProps> = ({ isSearching, pagination, 
                     <Box display="flex" alignItems="center">
                         <Box>
                             <IconButton disabled={pagination.page === 1 || isSearching} onClick={() => paginate(pagination.page - 1)}><ArrowBackIcon /></IconButton>
-                        Page  {pagination.page} of {pagination.total_pages}
+                            Page  {pagination.page} of {pagination.total_pages}
                             <IconButton disabled={!pagination.hasNextPage || isSearching} onClick={() => paginate(pagination.page + 1)}><ArrowForwardIcon /></IconButton>
                         </Box>
                     </Box>

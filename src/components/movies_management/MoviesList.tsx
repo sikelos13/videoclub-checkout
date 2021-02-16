@@ -11,11 +11,12 @@ import Typography from '@material-ui/core/Typography';
 interface MoviesListProps {
     moviesList: Movie[];
     notificationText: string;
+    selectMovie: (movie: Movie) => void;
     // handleUpdate: (form: any) => void;
     // handleDelete: (player: Player) => void;
 }
 
-const MoviesList: React.FC<MoviesListProps> = (({ moviesList, notificationText }: MoviesListProps) => {
+const MoviesList: React.FC<MoviesListProps> = (({ moviesList, notificationText, selectMovie }: MoviesListProps) => {
     const [isEditMode, setMode] = useState(false);
     const [name, setName] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
@@ -55,30 +56,31 @@ const MoviesList: React.FC<MoviesListProps> = (({ moviesList, notificationText }
             {moviesList.length > 0 
                 ? moviesList.map((movie: Movie) => {
                 return (
-                    <Box key={movie.id} width="400px" maxHeight="650px" mb="10px" p={1}>
+                    <Box key={movie.id} width="300px" maxHeight="450px" p={1}>
                     <Card>
                     <CardContent>
                       <Typography gutterBottom>
-                      {movie.title}
+                        <Box fontSize="15px" p="5px">{movie.title}</Box>
                       </Typography>
-                      <Typography variant="h5" component="h2">
-                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="preview-poster" width="350" height="450" />
+                      <Box display="flex" justifyContent="center" p="5px">
+                        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="preview-poster" width="200" height="250" />
+                      </Box>
+                      <Typography color="textSecondary">
+                        Release date: {movie.release_date}
                       </Typography>
                       <Typography color="textSecondary">
-                        Release data: {movie.release_date}
-                      </Typography>
-                      <Typography variant="body2" component="p">
                           Score: {movie.vote_average}
                       </Typography>
                     </CardContent>
                     <CardActions>
                       <Button size="small">Learn More</Button>
+                      <Button size="small" color="primary" onClick={() => selectMovie(movie)}>{movie.isSelected ? "Remove" : "Add"}</Button>
                     </CardActions>
                   </Card>
                   </Box>
                 )
             })
-            : <SnackbarContent color="secondary" message={notificationText} />
+            : "No movies to show"
             }
         </>
     )

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, FormLabel, TableCell } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import IconButton from '@material-ui/core/IconButton';
 import { Pagination } from '../api/types/Pagination';
-
 
 interface PaginationProps {
     isSearching: boolean;

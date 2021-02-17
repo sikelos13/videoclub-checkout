@@ -8,6 +8,10 @@
     max-width: 500px;
 }
 
+.Image_Poster {
+    border-radius: 5px;
+}
+
 @media only screen and (max-width: 786px) {
     .Header_Actions {
         flex-direction: column !important;

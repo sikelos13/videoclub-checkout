@@ -19,8 +19,8 @@ cd transifex-assignment
 Create on the root folder a .env file and put inside our env var for API Endpoint and our API KEY 
 ```
 
-**Use your own KEY else ask the auth to provide you one. (e.g REACT_APP_API_KEY="YOUR_KEY")**
-**The api endpoint. (REACT_APP_API_ENDPOINT="https://api.themoviedb.org/")**
+* **Use your own KEY else ask the auth to provide you one. (e.g REACT_APP_API_KEY="YOUR_KEY")**
+* **The api endpoint. (REACT_APP_API_ENDPOINT="https://api.themoviedb.org/")**
 
 After the first step continue with our main set up and the installation of our modules.
 

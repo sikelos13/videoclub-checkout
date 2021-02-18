@@ -13,30 +13,31 @@ Transifex Assignment is a simple crud web app search for movies and add to check
 
 ### How to run 
 
-After installing and run the G-Loot server follow the commands below to start the project in development.
-
-Firstly we need to pass our env vars in our app.
 ```
 git clone transifex-assignment
 cd transifex-assignment
-Create on the root folder a .env file and put inside our env var which will use (REACT_APP_API_ENDPOINT="https://api.themoviedb.org/")
+Create on the root folder a .env file and put inside our env var for API Endpoint and our API KEY 
 ```
 
-After the first step continue with our main set up.
+**Use your own KEY else ask the auth to provide you one. (e.g REACT_APP_API_KEY="YOUR_KEY")
+**The api endpoint. (REACT_APP_API_ENDPOINT="https://api.themoviedb.org/")
+
+After the first step continue with our main set up and the installation of our modules.
+
 ```
 npm install
 npm run start
-The app wiil probably ask to run in different port as the 3000 is used from the Express server. Type "y"
 ```
 
 ### Features implemented
 * Search field with on change search action (Debounce used here)
-* Delete players from list easily with one click
-* Create player on the fly
-* Added pagination with next and back buttons
-* Calculate and delete on the fly in any page or edit
-* Debounce function created for search input
-* Max page number set to 10 per page but can be changed via dropdown.
+* Add movies in cart
+* Remove movie from cart or from movies list
+* Show details of movie by click the specific button
+* Make checkout on cart
+* Clear cart from selected movies
+* Pagination for movies based on api response for movies per page (25 fixed)
+* Sort by "Highest vote average" or "Lowest vote average"
 
 ### Testing build with
 

@@ -15,6 +15,8 @@ import CheckoutCart from "../components/CheckoutCart";
 import { getUpdatedMoviesList } from "../utils/getUpdatedMoviesList";
 import { createCheckoutApi, CreateCheckoutApiResponse } from "../api/checkout/createCheckout";
 import { getInitialListState } from "../utils/getInitialListState";
+import { getSortedMoviesList } from "../utils/getSortedMoviesList";
+import { getFilteredMoviesList } from "../utils/getFilteredMoviesList";
 
 interface MoviesManagementState {
     loading: boolean;
@@ -24,7 +26,10 @@ interface MoviesManagementState {
     isSearching: boolean;
     pagination: Pagination;
     selectedMovies: Movie[];
+    sortMoviesBy: SortType;
 }
+
+export type SortType = "highest_vote_average" | "lowest_vote_average" | "" | string;
 
 class MoviesManagement extends Component<{}, MoviesManagementState> {
     constructor(props: any) {
@@ -37,6 +42,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
             searchTerm: "",
             isSearching: false,
             selectedMovies: [],
+            sortMoviesBy: "",
             pagination: {
                 page: 1,
                 total_pages: 0,
@@ -66,6 +72,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
                 this.setState({
                     moviesList: updatedMoviesList,
                     loading: false,
+                    sortMoviesBy: "",
                     pagination: {
                         page: response.data.page,
                         total_results: response.data.total_results,
@@ -89,8 +96,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
     handleSearch = (event: any) => {
         const value = event.target.value;
         if (value !== "") {
-            this.setState({ searchTerm: value }, () => this.fetchMovies(value,true));
-            
+            this.setState({ searchTerm: value }, () => this.fetchMovies(value, true));
         }
     };
 
@@ -132,8 +138,8 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
 
                 const initialMoviesList = getInitialListState(moviesList);
 
-                this.setState({ 
-                    selectedMovies: [], 
+                this.setState({
+                    selectedMovies: [],
                     loadingCheckout: false,
                     moviesList: initialMoviesList
                 });
@@ -165,9 +171,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
         const { selectedMovies, moviesList } = this.state;
 
         const updatedMoviesList = getUpdatedMoviesList(moviesList, selectedMovie);
-        const updatedSelectedMovies = selectedMovies.filter((movie: Movie) => {
-            return movie.id !== selectedMovie.id
-        });
+        const updatedSelectedMovies = getFilteredMoviesList(selectedMovies, selectedMovie)
 
         this.setState({
             selectedMovies: updatedSelectedMovies,
@@ -177,13 +181,27 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
 
     handleClearCart = () => {
         const { moviesList } = this.state;
-
         const initialMoviesList = getInitialListState(moviesList);
 
-        this.setState({ 
+        this.setState({
             selectedMovies: [],
             moviesList: initialMoviesList
-         });
+        });
+    }
+
+    handleSortChange = (event: any) => {
+        const { moviesList, searchTerm } = this.state;
+        const { value } = event.target;
+        let sortedMoviesList = [] as Movie[];
+
+        this.setState({ loading: true, sortMoviesBy: value });
+
+        if(value !== "") {
+            sortedMoviesList = getSortedMoviesList(moviesList, value);
+            this.setState({ moviesList: sortedMoviesList, loading: false });
+        } else {
+            this.fetchMovies(searchTerm);
+        }
     }
 
     render() {
@@ -194,17 +212,21 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
             isSearching,
             pagination,
             selectedMovies,
-            loadingCheckout
+            loadingCheckout,
+            sortMoviesBy
         } = this.state;
 
         return (
             <Box p={2} mt={2}>
                 <AppHeader
+                    sortMoviesBy={sortMoviesBy}
+                    handleSortChange={this.handleSortChange}
                     handleSearch={this.handleSearch}
                     pagination={pagination}
                     isSearching={isSearching}
                     handlePaginate={this.handlePaginate}
                     searchTerm={searchTerm}
+
                 />
                 <Box display="flex" flexDirection="row">
                     <Box

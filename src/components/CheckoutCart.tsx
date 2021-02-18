@@ -24,7 +24,7 @@ const CheckoutCart: React.FC<CheckoutCartProps> = memo(({ selectedMovies, handle
         <Box textAlign="center" fontSize="20px" fontWeight="bold" p={1}>
             Shopping cart - Selected Movies: {selectedMovies.length}
         </Box>
-        <List>
+        <List style={{ maxHeight: "400px", overflowY: "auto"}}>
             {selectedMovies.length > 0
                 ? selectedMovies.map((movie: Movie) => {
                     return (
@@ -44,7 +44,7 @@ const CheckoutCart: React.FC<CheckoutCartProps> = memo(({ selectedMovies, handle
             <Button 
                 color="primary" 
                 onClick={handleCheckout}
-                disabled={loadingCheckout}
+                disabled={loadingCheckout || selectedMovies.length === 0}
             >
                 Checkout
             </Button>

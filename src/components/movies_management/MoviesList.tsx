@@ -18,68 +18,76 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList, handleAddMovie
 
 
     const handleDetails = (id: string) => {
-        if(selectedMovie !== id) {
+        if (selectedMovie !== id) {
             setShowDetails(true);
             setSelectedMovie(id);
             return;
         }
-        
+
         setShowDetails(!showDetails);
         setSelectedMovie(id);
     }
 
     return (
-    <>
-        {moviesList.length > 0
-            ? moviesList.map((movie: Movie) => {
-                return (
-                    <Box key={movie.id} width="300px" maxHeight="420px" overflow="auto" p={1}>
-                        {showDetails && selectedMovie === movie.id
-                        ? <Card>
-                            <CardContent>
-                                <Typography color="textSecondary">{movie.title}</Typography>
-                                <Typography color="textSecondary">
-                                    Release date: {movie.release_date}
-                                </Typography>
-                                <Typography color="textSecondary">
-                                    Score: {movie.vote_average}
-                                </Typography>
-                                <Box component={Typography} textAlign="justify" p="5px" color="textPrimary">
-                                    Overview: {movie.overview}
-                                </Box>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" onClick={() => handleDetails("")}>Close details</Button>
-                            </CardActions>
-                        </Card>
-                        : <Card>
-                        <CardContent>
-                            <Typography color="textPrimary">{movie.title}</Typography>
-                            <Box display="flex" justifyContent="center" p="10px">
-                                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="preview-poster" width="200" height="250" className="Image_Poster" />
-                            </Box>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" onClick={() => handleDetails(movie.id)}>Learn More</Button>
-                            {movie.isSelected
-                                ? <Button
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => handleRemoveMovie(movie)}>Remove</Button>
-                                : <Button
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => handleAddMovie(movie)}>Add</Button>
+        <>
+            {moviesList.length > 0
+                ? moviesList.map((movie: Movie) => {
+                    const showSelectedMovieDetails = showDetails && selectedMovie === movie.id;
+
+                    return (
+                        <Box key={movie.id} width="300px" display="block" height="420px" overflow="auto" p={1}>
+                            {showSelectedMovieDetails
+                                ? <Card>
+                                    <CardContent>
+                                        <Typography color="textSecondary">{movie.title}</Typography>
+                                        <Typography color="textSecondary">
+                                            Release date: {movie.release_date}
+                                        </Typography>
+                                        <Typography color="textSecondary">
+                                            Score: {movie.vote_average}
+                                        </Typography>
+                                        <Box component={Typography} textAlign="justify" p="5px" color="textPrimary">
+                                            Overview: {movie.overview}
+                                        </Box>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small" onClick={() => handleDetails("")}>Close details</Button>
+                                    </CardActions>
+                                </Card>
+                                : <Card>
+                                    <CardContent>
+                                        <Typography color="textPrimary">{movie.title}</Typography>
+                                        <Box display="flex" justifyContent="center" p="5px">
+                                            {movie.poster_path 
+                                                ? <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="preview-poster" width="200" height="250" className="Image_Poster" />
+                                                : <Box width="200px" height="250px" textAlign="center" fontSize="20px" fontWeight="bold">Without poster</Box>
+                                            }
+                                            </Box>
+                                        <Typography color="textSecondary">
+                                            Score: {movie.vote_average}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small" onClick={() => handleDetails(movie.id)}>Learn More</Button>
+                                        {movie.isSelected
+                                            ? <Button
+                                                size="small"
+                                                color="primary"
+                                                onClick={() => handleRemoveMovie(movie)}>Remove</Button>
+                                            : <Button
+                                                size="small"
+                                                color="primary"
+                                                onClick={() => handleAddMovie(movie)}>Add</Button>
+                                        }
+                                    </CardActions>
+                                </Card>
                             }
-                        </CardActions>
-                    </Card>
-                    }
-                    </Box>
-                )
-            })
-            : "No movies to show"
-        }
-    </>
+                        </Box>
+                    )
+                })
+                : <Box alignSelf="center" fontSize="20px" fontWeight="bold">No movies to show</Box>
+            }
+        </>
     )
 });
 

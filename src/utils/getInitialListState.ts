@@ -6,6 +6,5 @@ export const getInitialListState = (list: Movie[]) => {
             ...movie,
             isSelected: false
         }
-       
     });
 }

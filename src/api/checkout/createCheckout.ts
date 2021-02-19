@@ -7,6 +7,11 @@ export interface CreateCheckoutApiResponse {
   successMessage: string;
   status: number;
 }
+
+export interface CreateCheckoutApiParams {
+  data: string[]
+}
+
 /**
  *  Great a checkout session
  *
@@ -17,9 +22,7 @@ export interface CreateCheckoutApiResponse {
  * @returns Promise<CreateCheckoutApiResponse>
  */
 
-export const createCheckoutApi = (
-  form: any
-): Promise<CreateCheckoutApiResponse> =>
+export const createCheckoutApi = (form: CreateCheckoutApiParams): Promise<CreateCheckoutApiResponse> =>
   axios
     .post(`https://api.mocklets.com/mock68075/`, form, {
       headers: {

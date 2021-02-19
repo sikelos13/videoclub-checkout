@@ -13,7 +13,7 @@ import PaginationNavBar from "../components/PaginationNavBar";
 import { getHasNextPage } from "../utils/getHasNextPage";
 import CheckoutCart from "../components/CheckoutCart";
 import { getUpdatedMoviesList } from "../utils/getUpdatedMoviesList";
-import { createCheckoutApi, CreateCheckoutApiResponse } from "../api/checkout/createCheckout";
+import { createCheckoutApi, CreateCheckoutApiResponse, CreateCheckoutApiParams } from "../api/checkout/createCheckout";
 import { getInitialListState } from "../utils/getInitialListState";
 import { getSortedMoviesList } from "../utils/getSortedMoviesList";
 import { getFilteredMoviesList } from "../utils/getFilteredMoviesList";
@@ -125,7 +125,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
 
         const form = {
             data: selectedMoviesIds
-        }
+        } as CreateCheckoutApiParams
 
         createCheckoutApi(form).then((response: CreateCheckoutApiResponse) => {
             if (response.success) {

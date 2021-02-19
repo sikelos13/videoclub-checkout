@@ -1,6 +1,6 @@
 export interface Movie {
     poster_path: string;
-    adult: false;
+    adult: boolean;
     overview: string;
     release_date: string;
     genre_ids: number[];

@@ -193,15 +193,16 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
         const { moviesList, searchTerm } = this.state;
         const { value } = event.target;
         let sortedMoviesList = [] as Movie[];
+        this.setState({ loading: true });
 
-        this.setState({ loading: true, sortMoviesBy: value });
-
-        if(value !== "") {
-            sortedMoviesList = getSortedMoviesList(moviesList, value);
-            this.setState({ moviesList: sortedMoviesList, loading: false });
-        } else {
+        if(value === "") {
             this.fetchMovies(searchTerm);
+            return;
         }
+
+        sortedMoviesList = getSortedMoviesList(moviesList, value);
+        this.setState({ moviesList: sortedMoviesList, loading: false, sortMoviesBy: value });
+       
     }
 
     render() {
@@ -228,7 +229,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
                     searchTerm={searchTerm}
 
                 />
-                <Box display="flex" flexDirection="row">
+                <Box display="flex" flexDirection="row" className="MainContainer_Body">
                     <Box
                         mt={2}
                         pb={2}
@@ -248,7 +249,7 @@ class MoviesManagement extends Component<{}, MoviesManagementState> {
                         }
                     </Box>
 
-                    <Box width="20%">
+                    <Box>
                         <CheckoutCart
                             selectedMovies={selectedMovies}
                             handleCheckout={this.handleCheckout}

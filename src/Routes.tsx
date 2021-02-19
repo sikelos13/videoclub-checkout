@@ -6,7 +6,7 @@ import { Container } from '@material-ui/core';
 export default class Routes extends Component<{}, {}> {
     render() {
         return (
-            <Container className="Main_Container">
+            <Container className="Main_Container" style={{ maxWidth: "1400px" }}>
                 <Switch>
                     <Route exact path={["/players", "/"]} component={MoviesManagement} />
                 </Switch>

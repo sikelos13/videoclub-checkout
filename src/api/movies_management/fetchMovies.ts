@@ -47,12 +47,6 @@ export const fetchMoviesApi = (params: FetchMoviesApiParams): Promise<FetchMovie
                     ...response,
                     success: true
                 }
-            } else if (response.status === 400) {
-                return {
-                    ...response,
-                    success: false,
-                    errorMessage: handleErrorMessage(response)
-                }
             } else {
                 return {
                     ...response,

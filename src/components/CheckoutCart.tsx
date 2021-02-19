@@ -18,6 +18,7 @@ const CheckoutCart: React.FC<CheckoutCartProps> = memo(({ selectedMovies, handle
     <Box
         border="1px solid black"
         borderRadius="5px"
+        boxShadow="0 15px 17px 0 rgb(0 0 0 / 16%), 0 15px 17px 0 rgb(0 0 0 / 12%)"
         style={{ backgroundColor: "#ffffff", maxHeight: "500px", width: "400px" }}
         mt="25px"
     >
@@ -30,7 +31,7 @@ const CheckoutCart: React.FC<CheckoutCartProps> = memo(({ selectedMovies, handle
                     return (
                         <ListItem key={movie.id}>
                             <ListItemText primary={movie.title} />
-                            <IconButton onClick={() => handleRemoveMovie(movie)}>
+                            <IconButton onClick={() => handleRemoveMovie(movie)} disabled={loadingCheckout}>
                                 <DeleteForeverIcon />
                             </IconButton>
                         </ListItem>

@@ -35,7 +35,7 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList, handleAddMovie
                     const showSelectedMovieDetails = showDetails && selectedMovie === movie.id;
 
                     return (
-                        <Box key={movie.id} width="300px" display="block" height="420px" overflow="auto" p={1}>
+                        <Box key={movie.id} width="250px" display="block" height="450px" overflow="auto" p={1}>
                             {showSelectedMovieDetails
                                 ? <Card>
                                     <CardContent>

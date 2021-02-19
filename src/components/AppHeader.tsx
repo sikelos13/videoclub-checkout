@@ -22,7 +22,7 @@ const AppHeader: React.FC<ViewHeaderProps> = (({ handleSearch, handlePaginate, s
     <Box display="flex" width="100%" flexDirection="row" justifyContent="space-between" p={1} className="Header_Actions">
       <Input placeholder="Search movies by name..." className="Search_Input" onChange={handleSearch} />
       {pagination.total_pages > 0 &&
-        <Box alignSelf="flex-end">
+        <Box className="SortHeader_Action" mt="10px">
         <Box component={FormLabel} mr="10px">Sort by</Box>
           <NativeSelect
               value={sortMoviesBy}

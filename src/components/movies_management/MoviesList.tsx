@@ -35,9 +35,9 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList, handleAddMovie
                     const showSelectedMovieDetails = showDetails && selectedMovie === movie.id;
 
                     return (
-                        <Box key={movie.id} width="250px" display="block" height="450px" overflow="auto" p={1}>
+                        <Box key={movie.id} width="250px" display="block" height="420px" p={1}>
                             {showSelectedMovieDetails
-                                ? <Card>
+                                ? <Card style={{ height: "400px", overflowY: "auto"}}>
                                     <CardContent>
                                         <Typography color="textSecondary">{movie.title}</Typography>
                                         <Typography color="textSecondary">
@@ -54,7 +54,7 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList, handleAddMovie
                                         <Button size="small" onClick={() => handleDetails("")}>Close details</Button>
                                     </CardActions>
                                 </Card>
-                                : <Card>
+                                : <Card style={{ height: "400px", overflowY: "auto"}}>
                                     <CardContent>
                                         <Typography color="textPrimary">{movie.title}</Typography>
                                         <Box display="flex" justifyContent="center" p="5px">
@@ -67,7 +67,7 @@ const MoviesList: React.FC<MoviesListProps> = memo(({ moviesList, handleAddMovie
                                             Score: {movie.vote_average}
                                         </Typography>
                                     </CardContent>
-                                    <CardActions>
+                                    <CardActions style={{ display: "flex", justifyContent: "center"}}>
                                         <Button size="small" onClick={() => handleDetails(movie.id)}>Learn More</Button>
                                         {movie.isSelected
                                             ? <Button

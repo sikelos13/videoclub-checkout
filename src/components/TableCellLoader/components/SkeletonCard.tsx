@@ -5,10 +5,10 @@ import Typography from '@material-ui/core/Typography';
 export const SkeletonCard = () => {
     return (
         <Box mb={5}>
-            <Skeleton width="80%">
+            <Skeleton width="60%">
                 <Typography>.</Typography>
             </Skeleton>
-            <Skeleton variant="rect" width="100%" style={{ borderRadius: "5px", height: "250px"}}>
+            <Skeleton variant="rect" width="100%" style={{ borderRadius: "5px", width: "250px", height: "300px"}}>
                 <div style={{ paddingTop: '55%'}} />
             </Skeleton>
             <Skeleton width="60%">

@@ -1,7 +1,6 @@
 import MoviesManagement from "../../containers/MoviesManagement";
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import axios from 'axios';
 import MoviesList from "../../components/movies_management/MoviesList";
 import { moviesList } from "../constants/moviesList";
 

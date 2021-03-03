@@ -1,6 +1,6 @@
-## Transifex Assignment
+## Video club with checkout
 
-Transifex Assignment is a simple crud web app search for movies and add to checkout cart using React.
+Video club with checkout is a simple crud web app search for movies and add to checkout cart using React.
 ## Build With
 
 * [React](https://reactjs.org/)
@@ -14,8 +14,8 @@ Transifex Assignment is a simple crud web app search for movies and add to check
 ### How to run 
 
 ```
-git clone transifex-assignment
-cd transifex-assignment
+git clone videoclub-checkout
+cd videoclub-checkout
 Create on the root folder a .env file and put inside our env var for API Endpoint and our API KEY 
 ```
 
